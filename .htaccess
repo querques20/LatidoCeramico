@@ -1,0 +1,36 @@
+
+Options -Indexes
+RewriteEngine On
+RewriteBase /
+
+<FilesMatch "(?i)\.(env|sql|json|md|yml|lock)$">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+RewriteCond %{REQUEST_URI} !^/clases/?$
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+RewriteRule ^admin(/.*)?$ admin$1 [L]
+
+RewriteRule ^$ index.php?seccion=inicio [R=302,L,QSA]
+RewriteRule ^inicio/?$ index.php?seccion=inicio [R=302,L,QSA]
+RewriteRule ^productos/?$ index.php?seccion=productos [R=302,L,QSA]
+RewriteRule ^combos/?$ index.php?seccion=combos [R=302,L,QSA]
+RewriteRule ^clases/?$ index.php?seccion=clases [R=302,L,QSA]
+RewriteRule ^contacto/?$ index.php?seccion=contacto [R=302,L,QSA]
+RewriteRule ^favoritos/?$ index.php?seccion=favoritos [R=302,L,QSA]
+RewriteRule ^checkout/?$ index.php?seccion=checkout [R=302,L,QSA]
+RewriteRule ^confirmacion/?$ index.php?seccion=confirmacion [R=302,L,QSA]
+
+RewriteRule ^producto/([a-z0-9\-]+)/?$ index.php?seccion=detalle-producto&slug=$1 [R=302,L,QSA]
+
+RewriteCond %{REQUEST_URI} !^/(assets|secciones|share|tools|docs|Ej\.Parcial)/
+RewriteRule ^([a-z0-9\-]+)/?$ index.php?seccion=$1 [R=302,L,QSA]
+

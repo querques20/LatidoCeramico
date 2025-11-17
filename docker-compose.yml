@@ -1,0 +1,62 @@
+services:
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: latidoceramico_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      TZ: America/Argentina/Buenos_Aires
+    restart: unless-stopped
+    depends_on:
+      - db
+    networks:
+      - latido_network
+
+
+  db:
+    image: mysql:8.0
+    container_name: latidoceramico_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: latidoceramico
+      MYSQL_USER: latido
+      MYSQL_PASSWORD: latido123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - latido_network
+
+ 
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: latidoceramico_phpmyadmin
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: root
+      PMA_ARBITRARY: 1
+      UPLOAD_LIMIT: 100M
+    depends_on:
+      - db
+    networks:
+      - latido_network
+
+
+volumes:
+  db_data:
+
+
+networks:
+  latido_network:
+    driver: bridge

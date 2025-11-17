@@ -1,0 +1,65 @@
+[
+  {
+    "slug": "inicio",
+    "nombre": "Inicio",
+    "titulo": "Bienvenido a Latido Cerámico",
+    "nav": true,
+    "orden": 1
+  },
+  {
+    "slug": "clases",
+    "nombre": "Clases",
+    "titulo": "Clases para niñas y niños (4–13 años)",
+    "nav": true,
+    "orden": 2
+  },
+  {
+    "slug": "productos",
+    "nombre": "Productos",
+    "titulo": "Nuestros Productos",
+    "nav": true,
+    "orden": 3
+  },
+  {
+    "slug": "combos",
+    "nombre": "Combos",
+    "titulo": "Combos y Promociones",
+    "nav": false,
+    "orden": 3.5
+  },
+  {
+    "slug": "contacto",
+    "nombre": "Contacto",
+    "titulo": "Contacto",
+    "nav": true,
+    "orden": 4
+  },
+  {
+    "slug": "favoritos",
+    "nombre": "Favoritos",
+    "titulo": "Tus favoritos",
+    "nav": true,
+    "orden": 5
+  },
+  {
+    "slug": "detalle-producto",
+    "nombre": "Producto",
+    "titulo": "Detalle de producto",
+    "nav": false,
+    "orden": 99
+  },
+  {
+    "slug": "checkout",
+    "nombre": "Finalizar compra",
+    "titulo": "Finalizar compra",
+    "nav": false,
+    "orden": 98
+  },
+  {
+    "slug": "confirmacion",
+    "nombre": "Confirmación",
+    "titulo": "Confirmación de compra",
+    "nav": false,
+    "orden": 97
+  }
+]
