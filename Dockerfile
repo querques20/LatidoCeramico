@@ -1,7 +1,8 @@
 
 FROM php:8.2-apache
 
-RUN a2enmod rewrite \
+RUN a2dismod mpm_event || true \
+	&& a2enmod mpm_prefork rewrite \
 	&& { \
 		echo '<VirtualHost *:80>'; \
 		echo '  DocumentRoot /var/www/html'; \
