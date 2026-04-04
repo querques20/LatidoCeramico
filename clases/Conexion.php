@@ -1,18 +1,22 @@
 <?php
 class Conexion
 {
-    private const HOST = 'latidoceramico_db';
-    private const DB = 'latidoceramico';
-    private const USER = 'latido';
-    private const PASS = 'latido123';
-    private const DSN = 'mysql:host=' . self::HOST . ';dbname=' . self::DB . ';charset=utf8mb4';
-
     private PDO $conexion;
+
+    private static function dsn(): string
+    {
+        $host = getenv('MYSQL_HOST') ?: 'latidoceramico_db';
+        $port = getenv('MYSQL_PORT') ?: '3306';
+        $db   = getenv('MYSQL_DATABASE') ?: 'latidoceramico';
+        return "mysql:host={$host};port={$port};dbname={$db};charset=utf8mb4";
+    }
 
     public function __construct()
     {
+        $user = getenv('MYSQL_USER') ?: 'latido';
+        $pass = getenv('MYSQL_PASSWORD') ?: 'latido123';
         try {
-            $this->conexion = new PDO(self::DSN, self::USER, self::PASS);
+            $this->conexion = new PDO(self::dsn(), $user, $pass);
             $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conexion->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
