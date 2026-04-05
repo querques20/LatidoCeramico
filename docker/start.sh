@@ -22,18 +22,20 @@ DB_PASS="${MYSQL_PASSWORD:-latido123}"
         sleep 3
     done
 
-    TABLE_EXISTS=$(mysql -h"${DB_HOST}" -P"${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD:-root}" --skip-ssl \
-        -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${DB_NAME}' AND table_name='productos';" \
+    HAS_DATA=$(mysql -h"${DB_HOST}" -P"${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD:-root}" --skip-ssl \
+        -e "SELECT COUNT(*) FROM ${DB_NAME}.productos;" \
         --skip-column-names 2>/dev/null || echo "0")
 
-    if [ "${TABLE_EXISTS}" = "0" ] && [ -f /var/www/html/data/latidoceramico.sql ]; then
+    if [ "${HAS_DATA}" = "0" ] && [ -f /var/www/html/data/latidoceramico.sql ]; then
         echo "[db-init] Importando base de datos inicial..."
+        mysql -h"${DB_HOST}" -P"${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD:-root}" --skip-ssl \
+            -e "DROP DATABASE IF EXISTS \`${DB_NAME}\`; CREATE DATABASE \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; GRANT ALL ON \`${DB_NAME}\`.* TO '${DB_USER}'@'%';" 2>&1
         mysql -h"${DB_HOST}" -P"${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD:-root}" --skip-ssl "${DB_NAME}" \
             < /var/www/html/data/latidoceramico.sql 2>&1 \
             && echo "[db-init] Importación OK." \
             || echo "[db-init] Error en importación."
     else
-        echo "[db-init] DB ya inicializada."
+        echo "[db-init] DB ya inicializada (${HAS_DATA} productos)."
     fi
 ) &
 
