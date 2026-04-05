@@ -5,7 +5,7 @@ RUN apt-get update \
        nginx \
        libjpeg62-turbo-dev libpng-dev libwebp-dev \
     && docker-php-ext-configure gd --with-jpeg --with-webp \
-    && docker-php-ext-install gd pdo pdo_mysql \
+    && docker-php-ext-install gd pdo pdo_mysql mysqli \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PHP_DATE_TIMEZONE=America/Argentina/Buenos_Aires
