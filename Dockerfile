@@ -3,6 +3,7 @@ FROM php:8.2-fpm
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
        nginx \
+       default-mysql-client \
        libjpeg62-turbo-dev libpng-dev libwebp-dev \
     && docker-php-ext-configure gd --with-jpeg --with-webp \
     && docker-php-ext-install gd pdo pdo_mysql mysqli \
