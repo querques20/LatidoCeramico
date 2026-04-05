@@ -29,7 +29,7 @@ DB_PASS="${MYSQL_PASSWORD:-latido123}"
     if [ "${TABLE_EXISTS}" = "0" ] && [ -f /var/www/html/data/latidoceramico.sql ]; then
         echo "[db-init] Importando base de datos inicial..."
         mysql -h"${DB_HOST}" -P"${DB_PORT}" -u"${DB_USER}" -p"${DB_PASS}" "${DB_NAME}" \
-            < /var/www/html/data/latidoceramico.sql \
+            < /var/www/html/data/latidoceramico.sql 2>&1 \
             && echo "[db-init] Importación OK." \
             || echo "[db-init] Error en importación."
     else
