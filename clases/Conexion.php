@@ -16,7 +16,9 @@ class Conexion
         $user = getenv('MYSQL_USER') ?: 'latido';
         $pass = getenv('MYSQL_PASSWORD') ?: 'latido123';
         try {
-            $this->conexion = new PDO(self::dsn(), $user, $pass);
+            $this->conexion = new PDO(self::dsn(), $user, $pass, [
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+            ]);
             $this->conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conexion->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
