@@ -15,20 +15,20 @@ DB_PASS="${MYSQL_PASSWORD:-latido123}"
 (
     echo "[db-init] Esperando MySQL en ${DB_HOST}:${DB_PORT}..."
     for i in $(seq 1 30); do
-        if mysqladmin ping -h"${DB_HOST}" -P"${DB_PORT}" -u"${DB_USER}" -p"${DB_PASS}" --ssl-mode=disabled --silent 2>/dev/null; then
+        if mysqladmin ping -h"${DB_HOST}" -P"${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD:-root}" --skip-ssl --silent 2>/dev/null; then
             echo "[db-init] MySQL listo."
             break
         fi
         sleep 3
     done
 
-    TABLE_EXISTS=$(mysql -h"${DB_HOST}" -P"${DB_PORT}" -u"${DB_USER}" -p"${DB_PASS}" --ssl-mode=disabled \
+    TABLE_EXISTS=$(mysql -h"${DB_HOST}" -P"${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD:-root}" --skip-ssl \
         -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${DB_NAME}' AND table_name='productos';" \
         --skip-column-names 2>/dev/null || echo "0")
 
     if [ "${TABLE_EXISTS}" = "0" ] && [ -f /var/www/html/data/latidoceramico.sql ]; then
         echo "[db-init] Importando base de datos inicial..."
-        mysql -h"${DB_HOST}" -P"${DB_PORT}" -u"${DB_USER}" -p"${DB_PASS}" --ssl-mode=disabled "${DB_NAME}" \
+        mysql -h"${DB_HOST}" -P"${DB_PORT}" -u root -p"${MYSQL_ROOT_PASSWORD:-root}" --skip-ssl "${DB_NAME}" \
             < /var/www/html/data/latidoceramico.sql 2>&1 \
             && echo "[db-init] Importación OK." \
             || echo "[db-init] Error en importación."
